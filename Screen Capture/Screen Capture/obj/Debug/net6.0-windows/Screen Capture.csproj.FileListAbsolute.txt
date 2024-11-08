@@ -1,0 +1,32 @@
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\bin\Debug\net6.0-windows\Screen Capture.exe
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\bin\Debug\net6.0-windows\Screen Capture.deps.json
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\bin\Debug\net6.0-windows\Screen Capture.runtimeconfig.json
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\bin\Debug\net6.0-windows\Screen Capture.dll
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\bin\Debug\net6.0-windows\Screen Capture.pdb
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen_Capture.frmPrintScreen.resources
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.csproj.GenerateResource.cache
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.GeneratedMSBuildEditorConfig.editorconfig
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.AssemblyInfoInputs.cache
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.AssemblyInfo.cs
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.csproj.CoreCompileInputs.cache
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.dll
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\refint\Screen Capture.dll
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.pdb
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.genruntimeconfig.cache
+C:\בתי ספר\C#programs\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\ref\Screen Capture.dll
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\bin\Debug\net6.0-windows\Screen Capture.exe
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\bin\Debug\net6.0-windows\Screen Capture.deps.json
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\bin\Debug\net6.0-windows\Screen Capture.runtimeconfig.json
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\bin\Debug\net6.0-windows\Screen Capture.dll
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\bin\Debug\net6.0-windows\Screen Capture.pdb
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen_Capture.frmPrintScreen.resources
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.csproj.GenerateResource.cache
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.AssemblyInfoInputs.cache
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.AssemblyInfo.cs
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.csproj.CoreCompileInputs.cache
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.dll
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\refint\Screen Capture.dll
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.pdb
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\Screen Capture.genruntimeconfig.cache
+C:\Users\Magshimim\Desktop\startUP\uri\Screen Capture\Screen Capture\obj\Debug\net6.0-windows\ref\Screen Capture.dll
