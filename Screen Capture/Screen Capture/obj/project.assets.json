@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\Screen Capture\\Screen Capture\\Screen Capture.csproj",
+      "projectUniqueName": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\Screen Capture\\Screen Capture\\Screen Capture.csproj",
       "projectName": "Screen Capture",
-      "projectPath": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\Screen Capture\\Screen Capture\\Screen Capture.csproj",
+      "projectPath": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\Screen Capture\\Screen Capture\\Screen Capture.csproj",
       "packagesPath": "C:\\Users\\Magshimim\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\Screen Capture\\Screen Capture\\obj\\",
+      "outputPath": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\Screen Capture\\Screen Capture\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Magshimim\\AppData\\Roaming\\NuGet\\NuGet.Config",

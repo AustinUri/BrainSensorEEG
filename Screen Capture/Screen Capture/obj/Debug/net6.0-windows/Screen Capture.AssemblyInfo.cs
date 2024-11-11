@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Screen Capture")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34766bb575f9f9ae850c79de7bd120e90036e406")]
 [assembly: System.Reflection.AssemblyProductAttribute("Screen Capture")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Screen Capture")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
