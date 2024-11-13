@@ -12,6 +12,7 @@ from djitellopy import Tello
 #create enum of binary codes so the c# and the python can communicate
 
 
+#-1 = socket error
 
 # Socket configuration
 HOST = 'localhost'
@@ -23,8 +24,14 @@ def send_json_message(client_socket, code, data):
             "code": code,
             "data": data
         }
-        json_message = json.dumps(message).encode('utf-8')
-        client_socket.sendall(json_message)
+        jsonObj = json.loads(message)
+        client_socket.sendall(jsonObj)
+    else:
+        print("No socket initiallized!")
+        exit()
+
+
+
 
 def main():
      # Initialize socket
@@ -64,6 +71,10 @@ def main():
         exit(-1)
 
     # Continue with further drone operations here
+
+
+
+
 
     # Close the socket after use
     client_socket.close()
