@@ -18,13 +18,16 @@ namespace WinFormsApp1
         {
             InitializeComponent();
             server = new Server(this);
+            server.Start();
         }
 
-        internal void updateLabels(Server.DroneData data)
+        internal void updateLabels(ServerF.DroneData data)
         {
             label_Dbattery.Invoke((MethodInvoker)(() => label_Dbattery.Text = $"Battery: {data.Battery}%"));
             label_Dheight.Invoke((MethodInvoker)(() => label_Dheight.Text = $"Height: {data.Height} cm"));
             label_Dstatus.Invoke((MethodInvoker)(() => label_Dstatus.Text = "Status: Connected"));
         }
+
+
     }
 }
