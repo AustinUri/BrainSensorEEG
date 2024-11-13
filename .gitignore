@@ -1,0 +1,106 @@
+
+# Ignore Visual Studio specific files and folders
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore build results
+bin/
+obj/
+
+# Ignore .NET files
+*.dll
+*.exe
+*.app
+*.db
+*.ipch
+*.pch
+*.pdb
+*.rsp
+*.vspscc
+*.vssscc
+_TestResults/
+_ReSharper*
+*.cache/
+*.log
+
+# Ignore NuGet packages
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore Python bytecode and other generated files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+.eggs/
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Ignore Python virtual environments
+*.venv
+*.virtualenv
+pip-log.txt
+pip-delete-this-directory.txt
+*.log
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Ignore IDE/editor specific files (VS Code, JetBrains, etc.)
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Ignore testing and debugging files
+htmlcov/
+.tox/
+.nox/
+.coverage
+coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py[cod].cover
+.hypothesis/
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Ignore log files
+*.log
+*.log.*
+
+# Ignore temporary files and backups
+*~
+*.tmp
+*.bak
+*.swp
+*.swo
+*.class
+
+# Ignore dotenv files (environment variables)
+.env
+.env.*
+
+# Ignore Git folders
+.git/
+
