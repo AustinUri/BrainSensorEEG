@@ -17,6 +17,8 @@ namespace WinFormsApp1
         public Form1()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.Manual; // Set the start position manually
+            this.Location = new Point(0, 0); // Position the form on the top left corner
             server = new Server(this);
             server.Start();
         }
@@ -27,6 +29,7 @@ namespace WinFormsApp1
             label_Dheight.Invoke((MethodInvoker)(() => label_Dheight.Text = $"Height: {data.Height} cm"));
             label_Dstatus.Invoke((MethodInvoker)(() => label_Dstatus.Text = "Status: Connected"));
         }
+
 
 
     }

@@ -25,6 +25,7 @@ _TestResults/
 _ReSharper*
 *.cache/
 *.log
+*.zip
 
 # Ignore NuGet packages
 packages/

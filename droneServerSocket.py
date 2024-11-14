@@ -40,8 +40,8 @@ def send_message(client_socket, code, data):
     Sends a message in the format: [msgCode (1 byte)][length (4 bytes)][JSON message].
     """
     if client_socket:
-        # Convert the code to 1 byte and data to JSON string
-        msg_code = code.to_bytes(1, byteorder='big')
+        # Convert the code (enum value) to 1 byte and data to JSON string
+        msg_code = code.value.to_bytes(1, byteorder='big')  # Use code.value to get the integer
         json_data = json.dumps(data)
         json_bytes = json_data.encode('utf-8')
         
@@ -51,6 +51,7 @@ def send_message(client_socket, code, data):
         client_socket.sendall(message)
     else:
         print("No socket initialized!")
+
 
 def get_drone_data(tello):
     """

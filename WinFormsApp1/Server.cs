@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using WinFormsApp1;
+using NeuroTech.Analysis;
 
 namespace ServerF
 {
@@ -126,13 +127,14 @@ namespace ServerF
                 int msgLength = BitConverter.ToInt32(lengthBuffer, 0);
                 Console.WriteLine($"Message length: {msgLength}");
 
-                // 3. Read and deserialize the JSON payload
-                byte[] jsonBuffer = new byte[msgLength];
-                stream.Read(jsonBuffer, 0, msgLength);
-                string jsonData = Encoding.UTF8.GetString(jsonBuffer);
-                Console.WriteLine($"Received JSON: {jsonData}");
-                if (DroneMessageCode.Connected == code )
-                {
+
+                if (DroneMessageCode.Connected == code)
+                { 
+                    // 3. Read and deserialize the JSON payload
+                    byte[] jsonBuffer = new byte[msgLength];
+                    stream.Read(jsonBuffer, 0, msgLength);
+                    string jsonData = Encoding.UTF8.GetString(jsonBuffer);
+                    Console.WriteLine($"Received JSON: {jsonData}");
                     DroneData data = JsonConvert.DeserializeObject<DroneData>(jsonData);
                     HandleDroneMessage(code, data);
                 }
@@ -149,30 +151,37 @@ namespace ServerF
             switch (code)
             {
                 case DroneMessageCode.Connected:
-                    form1.Invoke((MethodInvoker)(() => form1.updateLabels(data)));  // Use Invoke to call updateLabels on the UI thread
-                    break;
-
                 case DroneMessageCode.Disconnected:
-                    form1.Invoke((MethodInvoker)(() => form1.ShowAlert("Connection lost. Please look for the drone.", "Drone Disconnected")));
-                    break;
-
                 case DroneMessageCode.LowBattery:
-                    form1.Invoke((MethodInvoker)(() => form1.ShowAlert("Low battery! Please look for the drone in the air and step away until it lands safely.", "Low Battery Warning")));
-                    break;
-
                 case DroneMessageCode.ConnectionError:
-                    form1.Invoke((MethodInvoker)(() => form1.ShowAlert("Could not establish connection with the drone.", "Connection Error")));
-                    break;
-
                 case DroneMessageCode.DataError:
-                    form1.Invoke((MethodInvoker)(() => form1.ShowAlert("Data error. Something is wrong. Please be cautious and check the drone.", "Data Error")));
+                    UpdateUIBasedOnCode(code, data);
                     break;
-
                 default:
                     Console.WriteLine("Unknown command received.");
                     break;
             }
         }
 
+
+
+        private void UpdateUIBasedOnCode(DroneMessageCode code, DroneData data)
+        {
+            string message = code switch
+            {
+                DroneMessageCode.Connected => "Drone Connected. All systems go!",
+                DroneMessageCode.Disconnected => "Connection lost. Please look for the drone.",
+                DroneMessageCode.LowBattery => "Low battery! Please look for the drone in the air and step away until it lands safely.",
+                DroneMessageCode.ConnectionError => "Could not establish connection with the drone.",
+                DroneMessageCode.DataError => "Data error. Something is wrong. Please be cautious and check the drone.",
+                _ => "Unhandled code."
+            };
+
+            form1.Invoke((MethodInvoker)(() =>
+            {
+                form1.updateLabels(data); // Assuming updateLabels handles all types of updates
+                form1.ShowAlert(message, code.ToString());
+            }));
+        }
     }
 }
