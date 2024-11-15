@@ -42,13 +42,14 @@ namespace WinFormsApp1
             label_Dheight = new Label();
             label_Dstatus = new Label();
             listbox_instru = new ListBox();
+            PopulateInstructions();
             SuspendLayout();
             // 
             // label_Battery
             // 
             label_Battery.Anchor = AnchorStyles.None;
             label_Battery.AutoSize = true;
-            label_Battery.Location = new Point(155, 31);
+            label_Battery.Location = new Point(76, 85);
             label_Battery.Name = "label_Battery";
             label_Battery.Size = new Size(217, 25);
             label_Battery.TabIndex = 0;
@@ -59,7 +60,7 @@ namespace WinFormsApp1
             // 
             label_Welcome.Anchor = AnchorStyles.None;
             label_Welcome.AutoSize = true;
-            label_Welcome.Location = new Point(632, -66);
+            label_Welcome.Location = new Point(523, 24);
             label_Welcome.Name = "label_Welcome";
             label_Welcome.Size = new Size(95, 25);
             label_Welcome.TabIndex = 2;
@@ -69,7 +70,7 @@ namespace WinFormsApp1
             // 
             label_Height.Anchor = AnchorStyles.None;
             label_Height.AutoSize = true;
-            label_Height.Location = new Point(155, 108);
+            label_Height.Location = new Point(90, 162);
             label_Height.Name = "label_Height";
             label_Height.Size = new Size(157, 25);
             label_Height.TabIndex = 3;
@@ -79,7 +80,7 @@ namespace WinFormsApp1
             // 
             lable_Drone.Anchor = AnchorStyles.None;
             lable_Drone.AutoSize = true;
-            lable_Drone.Location = new Point(155, 159);
+            lable_Drone.Location = new Point(90, 227);
             lable_Drone.Name = "lable_Drone";
             lable_Drone.Size = new Size(118, 25);
             lable_Drone.TabIndex = 5;
@@ -88,7 +89,7 @@ namespace WinFormsApp1
             // label_Dbattery
             // 
             label_Dbattery.AutoSize = true;
-            label_Dbattery.Location = new Point(517, 31);
+            label_Dbattery.Location = new Point(523, 85);
             label_Dbattery.Name = "label_Dbattery";
             label_Dbattery.Size = new Size(125, 25);
             label_Dbattery.TabIndex = 6;
@@ -97,7 +98,7 @@ namespace WinFormsApp1
             // label_Dheight
             // 
             label_Dheight.AutoSize = true;
-            label_Dheight.Location = new Point(514, 108);
+            label_Dheight.Location = new Point(520, 162);
             label_Dheight.Name = "label_Dheight";
             label_Dheight.Size = new Size(119, 25);
             label_Dheight.TabIndex = 7;
@@ -106,7 +107,7 @@ namespace WinFormsApp1
             // label_Dstatus
             // 
             label_Dstatus.AutoSize = true;
-            label_Dstatus.Location = new Point(517, 173);
+            label_Dstatus.Location = new Point(523, 227);
             label_Dstatus.Name = "label_Dstatus";
             label_Dstatus.Size = new Size(116, 25);
             label_Dstatus.TabIndex = 9;
@@ -117,7 +118,7 @@ namespace WinFormsApp1
             listbox_instru.Anchor = AnchorStyles.None;
             listbox_instru.FormattingEnabled = true;
             listbox_instru.ItemHeight = 25;
-            listbox_instru.Location = new Point(780, 12);
+            listbox_instru.Location = new Point(871, 113);
             listbox_instru.Name = "listbox_instru";
             listbox_instru.Size = new Size(259, 129);
             listbox_instru.TabIndex = 10;
@@ -126,7 +127,7 @@ namespace WinFormsApp1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1386, 301);
+            ClientSize = new Size(1245, 357);
             Controls.Add(listbox_instru);
             Controls.Add(label_Dstatus);
             Controls.Add(label_Dheight);
@@ -166,8 +167,8 @@ namespace WinFormsApp1
         private void PopulateInstructions()
         {
             listbox_instru.Items.Add("1. Ensure screen resolution is set to 1920x1080.");
-            listbox_instru.Items.Add("2. Set display scaling to 100%.");
-            listbox_instru.Items.Add("3. Position the EmotivPRO window at the top left corner.");
+            listbox_instru.Items.Add("2. Set display scaling to 150%.");
+            listbox_instru.Items.Add("3. Set the EmotivPro window on full screen");
             listbox_instru.Items.Add("4. Do not move any windows during session.");
             listbox_instru.Items.Add("5. Ensure the bar graph is always visible.");
             listbox_instru.Items.Add("6. Start the session with the 'Start Session' button.");

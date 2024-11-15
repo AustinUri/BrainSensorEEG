@@ -3,28 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|c:\\users\\magshimim\\desktop\\startup\\uri\\brainsensoreeg\\winformsapp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|c:\\users\\magshimim\\desktop\\startup\\uri\\brainsensoreeg\\winformsapp1\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|solutionrelative:form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|c:\\users\\magshimim\\desktop\\startup\\uri\\brainsensoreeg\\winformsapp1\\barchartanalyzer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|solutionrelative:barchartanalyzer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|c:\\users\\magshimim\\desktop\\startup\\uri\\brainsensoreeg\\winformsapp1\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|solutionrelative:server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|c:\\users\\magshimim\\desktop\\startup\\uri\\brainsensoreeg\\winformsapp1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|c:\\users\\magshimim\\desktop\\startup\\uri\\brainsensoreeg\\winformsapp1\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|solutionrelative:server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|c:\\users\\magshimim\\desktop\\startup\\uri\\brainsensoreeg\\winformsapp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|c:\\users\\magshimim\\desktop\\startup\\uri\\brainsensoreeg\\winformsapp1\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|solutionrelative:form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|c:\\users\\magshimim\\desktop\\startup\\uri\\brainsensoreeg\\winformsapp1\\barchartanalyzer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{94DC2E83-6A73-403B-A24D-CF15621D5624}|WinFormsApp1.csproj|solutionrelative:barchartanalyzer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,17 +34,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAApwA0AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-13T11:50:25.045Z",
               "IsPinned": true,
@@ -60,33 +60,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "BarChartAnalyzer.cs",
               "DocumentMoniker": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\BarChartAnalyzer.cs",
               "RelativeDocumentMoniker": "BarChartAnalyzer.cs",
               "ToolTip": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\BarChartAnalyzer.cs",
               "RelativeToolTip": "BarChartAnalyzer.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAADgvwsAAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAABMAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-14T19:49:17.49Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-14T19:49:17.49Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Form1.Designer.cs",
               "DocumentMoniker": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\Form1.Designer.cs",
               "RelativeDocumentMoniker": "Form1.Designer.cs",
               "ToolTip": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\Form1.Designer.cs",
               "RelativeToolTip": "Form1.Designer.cs",
-              "ViewState": "AgIAAJoAAAAAAAAAAAAqwI0AAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAYwCwAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-13T12:13:47.587Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
@@ -98,25 +97,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "Server.cs",
               "DocumentMoniker": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\Server.cs",
               "RelativeDocumentMoniker": "Server.cs",
               "ToolTip": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\Server.cs",
               "RelativeToolTip": "Server.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAUwGoAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-13T09:43:25.756Z"
+              "WhenOpened": "2024-11-13T09:43:25.756Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "C:\\Users\\Magshimim\\Desktop\\startUP\\uri\\BrainSensorEEG\\WinFormsApp1\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABUAAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAABYAAAAAAAAAAAApwB4AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-13T06:16:46.84Z",
               "EditorCaption": ""

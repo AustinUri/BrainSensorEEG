@@ -13,14 +13,21 @@ namespace WinFormsApp1
 
     public partial class Form1 : Form
     {
-        private Server server;
+        private Server _server;
         public Form1()
         {
-            InitializeComponent();
-            this.StartPosition = FormStartPosition.Manual; // Set the start position manually
-            this.Location = new Point(0, 0); // Position the form on the top left corner
-            server = new Server(this);
-            server.Start();
+            try
+            {
+                InitializeComponent();
+                this.StartPosition = FormStartPosition.Manual; // Set the start position manually
+                this.Location = new Point(0, 0); // Position the form on the top left corner
+                _server = new Server(this);
+                Task.Run(() => _server.Start()); // Run server on a separate thread
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to initialize Form1: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         internal void updateLabels(ServerF.DroneData data)

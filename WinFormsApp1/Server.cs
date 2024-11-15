@@ -12,11 +12,11 @@ namespace ServerF
     // Enum for message codes from the drone
     public enum DroneMessageCode : byte
     {
-        Connected = 0b0001,
-        Disconnected = 0b0010,
-        LowBattery = 0b0100,
-        ConnectionError = 0b0111,
-        DataError = 0b1000
+        Connected = 1,
+        Disconnected = 2,
+        LowBattery = 3,
+        ConnectionError = 4,
+        DataError = 5
     }
 
     // Enum for commands to control the drone
@@ -68,19 +68,7 @@ namespace ServerF
             listener.Stop();
         }
 
-        // Capture the RGB color at a specific screen pixel position
-        public (int R, int G, int B) CapturePixel(Point position)
-        {
-            using (Bitmap bmp = new Bitmap(1, 1))
-            {
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    g.CopyFromScreen(position.X, position.Y, 0, 0, new Size(1, 1));
-                }
-                Color color = bmp.GetPixel(0, 0);
-                return (color.R, color.G, color.B); // Return RGB as a tuple
-            }
-        }
+
 
         // Main loop for handling message processing
         private void ReceiveAndProcessMessages(NetworkStream stream)
@@ -92,12 +80,12 @@ namespace ServerF
                 {
                     for (int j = 0; j < 5; j++)
                     {
-                        Point position = new Point(1600, 633);  // Example point to capture
-                        var (r, g, b) = CapturePixel(position);
-                        Console.WriteLine($"Capture {j + 1} - R: {r}, G: {g}, B: {b}");
+
 
                         // TODO: Implement logic for averaging and sending to Python
                         // TODO: Receive command back from Python based on analysis
+                        System.Threading.Thread.Sleep(10000);
+
                     }
 
                     // After processing 5 captures, receive and handle commands
@@ -129,7 +117,7 @@ namespace ServerF
 
 
                 if (DroneMessageCode.Connected == code)
-                { 
+                {
                     // 3. Read and deserialize the JSON payload
                     byte[] jsonBuffer = new byte[msgLength];
                     stream.Read(jsonBuffer, 0, msgLength);
@@ -137,6 +125,12 @@ namespace ServerF
                     Console.WriteLine($"Received JSON: {jsonData}");
                     DroneData data = JsonConvert.DeserializeObject<DroneData>(jsonData);
                     HandleDroneMessage(code, data);
+                }
+                else
+                {
+                    DroneData data = new DroneData();
+                    data.Connected = false;
+                    HandleDroneMessage(code,data);
                 }
             }
             catch (Exception ex)

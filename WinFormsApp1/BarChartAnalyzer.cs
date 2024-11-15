@@ -11,10 +11,13 @@ namespace NeuroTech.Analysis
 {
     internal class BarChartAnalyzer
     {
-        public BarChartAnalyzer() {
+
+        private ScreenshotTimer _ScreenshotTimer;
+        private int _times;
+
+        public BarChartAnalyzer(int i) {
         
-               
-        
+               this._times = i;
         
         }
 
@@ -32,13 +35,15 @@ namespace NeuroTech.Analysis
         private Timer _timer;
         private int _count = 0;
         private ScreenCapture _screenCapture;
+        int _times;
 
-        public ScreenshotTimer()
+        public ScreenshotTimer(int times)
         {
             _screenCapture = new ScreenCapture();
             _timer = new Timer();
             _timer.Interval = 1000; // Interval set to 1000 milliseconds (1 second)
             _timer.Tick += Timer_Tick;
+            _times = times;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -46,7 +51,7 @@ namespace NeuroTech.Analysis
             if (_count < 5)
             {
                 Bitmap screenshot = _screenCapture.CaptureScreen();
-                screenshot.Save($"screenshot{this._count}.png", ImageFormat.Png); // Save screenshot to disk
+                screenshot.Save($"screenshot{this._count*this._times}.png", ImageFormat.Png); // Save screenshot to disk
                 _count++;
             }
             else
@@ -71,6 +76,20 @@ namespace NeuroTech.Analysis
             Graphics graphic = Graphics.FromImage(screenshot);
             graphic.CopyFromScreen(bounds.X, bounds.Y, 0, 0, bounds.Size, CopyPixelOperation.SourceCopy);
             return screenshot;
+        }
+
+
+        public (int R, int G, int B) CapturePixel(Point position)
+        {
+            using (Bitmap bmp = new Bitmap(1, 1))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.CopyFromScreen(position.X, position.Y, 0, 0, new Size(1, 1));
+                }
+                Color color = bmp.GetPixel(0, 0);
+                return (color.R, color.G, color.B); // Return RGB as a tuple
+            }
         }
     }
 

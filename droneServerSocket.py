@@ -12,11 +12,11 @@ from enum import Enum
 
 # Enum for drone message codes to communicate with C#
 class DroneMessageCode(Enum):
-    CONNECTED = 0b0001
-    DISCONNECTED = 0b0010
-    LOW_BATTERY = 0b0100  # Indicates low battery, emergency landing required
-    CONNECTION_ERROR = 0b0111  # Initial connection failed
-    DATA_ERROR = 0b1000  # Data retrieval failed (e.g., battery or height data)
+    CONNECTED = 1
+    DISCONNECTED = 2
+    LOW_BATTERY = 3  # Indicates low battery, emergency landing required
+    CONNECTION_ERROR = 4  # Initial connection failed
+    DATA_ERROR = 5  # Data retrieval failed (e.g., battery or height data)
 
 # Socket configuration
 HOST = 'localhost'
@@ -48,6 +48,7 @@ def send_message(client_socket, code, data):
         # Combine code, length, and JSON data into one message
         msg_len = len(json_bytes).to_bytes(4, byteorder='big')
         message = msg_code + msg_len + json_bytes
+        print(message)
         client_socket.sendall(message)
     else:
         print("No socket initialized!")
