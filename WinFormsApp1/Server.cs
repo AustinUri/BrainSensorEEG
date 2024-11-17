@@ -43,6 +43,8 @@ namespace ServerF
     {
         private readonly int port = 5000;
         private TcpListener listener;
+        private TcpClient client;
+        private NetworkStream stream;
         private Form1 form1;
 
         // Constructor to initialize server with a reference to the main form
@@ -58,11 +60,11 @@ namespace ServerF
             listener.Start();
             Console.WriteLine($"Server started on port {port}. Waiting for connection...");
 
-            TcpClient client = listener.AcceptTcpClient();
+            client = listener.AcceptTcpClient();
             Console.WriteLine("Client connected!");
 
-            NetworkStream stream = client.GetStream();
-            ReceiveAndProcessMessages(stream);
+            stream = client.GetStream();
+            ReceiveAndProcessMessages();
 
             client.Close();
             listener.Stop();
@@ -71,26 +73,29 @@ namespace ServerF
 
 
         // Main loop for handling message processing
-        private void ReceiveAndProcessMessages(NetworkStream stream)
+        private void ReceiveAndProcessMessages()
         {
             try
             {
                 // Process commands in batches (5 captures per command)
-                for (int i = 0; i < 5; i++)
-                {
-                    for (int j = 0; j < 5; j++)
-                    {
+                //for (int i = 0; i < 5; i++)
+                //{
+                //for (int j = 0; j < 5; j++)
+                //{
 
-
+                SendCommand(stream, DroneCommand.Takeoff, null);
                         // TODO: Implement logic for averaging and sending to Python
                         // TODO: Receive command back from Python based on analysis
-                        System.Threading.Thread.Sleep(10000);
+                System.Threading.Thread.Sleep(10000);
+                ProcessReceivedMessage(stream);
+                //}
+                SendCommand(stream, DroneCommand.Land, null);
+                System.Threading.Thread.Sleep(50000);
 
-                    }
+                // After processing 5 captures, receive and handle commands
+                ProcessReceivedMessage(stream);
 
-                    // After processing 5 captures, receive and handle commands
-                    ProcessReceivedMessage(stream);
-                }
+                //}
             }
             catch (Exception ex)
             {
@@ -99,28 +104,79 @@ namespace ServerF
         }
 
         // Process a single message from the client
+        private void ReadExact(NetworkStream stream, byte[] buffer, int offset, int count)
+        {
+            int bytesRead = 0;
+            while (bytesRead < count)
+            {
+                int read = stream.Read(buffer, offset + bytesRead, count - bytesRead);
+                if (read == 0)
+                    throw new Exception("Stream closed unexpectedly.");
+                bytesRead += read;
+            }
+        }
+
+
+        private void SendCommand(NetworkStream stream, DroneCommand command, object commandData = null)
+        {
+            try
+            {
+                // 1. Convert the command to a single byte
+                byte[] commandBuffer = new byte[] { (byte)command };
+
+                // 2. Serialize the command data to JSON, if any, and encode to bytes
+                string jsonData = commandData != null ? JsonConvert.SerializeObject(commandData) : string.Empty;
+                byte[] jsonBuffer = Encoding.UTF8.GetBytes(jsonData);
+
+                // 3. Get the length of the JSON data as a 4-byte array (Big Endian)
+                byte[] lengthBuffer = BitConverter.GetBytes(jsonBuffer.Length);
+                if (BitConverter.IsLittleEndian)
+                {
+                    Array.Reverse(lengthBuffer); // Convert to Big Endian if system uses Little Endian
+                }
+
+                // 4. Combine the command code, length, and JSON payload
+                byte[] message = new byte[commandBuffer.Length + lengthBuffer.Length + jsonBuffer.Length];
+                Buffer.BlockCopy(commandBuffer, 0, message, 0, commandBuffer.Length);
+                Buffer.BlockCopy(lengthBuffer, 0, message, commandBuffer.Length, lengthBuffer.Length);
+                Buffer.BlockCopy(jsonBuffer, 0, message, commandBuffer.Length + lengthBuffer.Length, jsonBuffer.Length);
+
+                // 5. Send the complete message to the client
+                stream.Write(message, 0, message.Length);
+                Console.WriteLine($"Sent command: {command}");
+                Console.WriteLine($"Command length: {jsonBuffer.Length}");
+                Console.WriteLine($"Command JSON: {jsonData}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending command: {ex.Message}");
+            }
+        }
+
+
         private void ProcessReceivedMessage(NetworkStream stream)
         {
             try
             {
                 // 1. Read the message code (1 byte)
                 byte[] msgCodeBuffer = new byte[1];
-                stream.Read(msgCodeBuffer, 0, 1);
+                ReadExact(stream, msgCodeBuffer, 0, 1);
                 DroneMessageCode code = (DroneMessageCode)msgCodeBuffer[0];
                 Console.WriteLine($"Received message code: {code}");
-
-                // 2. Read the message length (4 bytes)
-                byte[] lengthBuffer = new byte[4];
-                stream.Read(lengthBuffer, 0, 4);
-                int msgLength = BitConverter.ToInt32(lengthBuffer, 0);
-                Console.WriteLine($"Message length: {msgLength}");
-
+                Console.WriteLine("Raw Message Code Buffer: " + BitConverter.ToString(msgCodeBuffer));
 
                 if (DroneMessageCode.Connected == code)
                 {
-                    // 3. Read and deserialize the JSON payload
+                    // 2. Read the message length (4 bytes)
+                    byte[] lengthBuffer = new byte[4];
+                    ReadExact(stream, lengthBuffer, 0, 4);
+                    int msgLength = BitConverter.ToInt32(lengthBuffer.Reverse().ToArray(), 0); // Ensure correct endianness
+                    Console.WriteLine($"Message length: {msgLength}");
+                    Console.WriteLine("Raw Length Buffer: " + BitConverter.ToString(lengthBuffer));
+
+                // 3. Read and deserialize the JSON payload if the message code is 'Connected'
                     byte[] jsonBuffer = new byte[msgLength];
-                    stream.Read(jsonBuffer, 0, msgLength);
+                    ReadExact(stream, jsonBuffer, 0, msgLength);
                     string jsonData = Encoding.UTF8.GetString(jsonBuffer);
                     Console.WriteLine($"Received JSON: {jsonData}");
                     DroneData data = JsonConvert.DeserializeObject<DroneData>(jsonData);
@@ -128,9 +184,9 @@ namespace ServerF
                 }
                 else
                 {
-                    DroneData data = new DroneData();
-                    data.Connected = false;
-                    HandleDroneMessage(code,data);
+                    // Handle other codes
+                    DroneData data = new DroneData { Connected = false };
+                    HandleDroneMessage(code, data);
                 }
             }
             catch (Exception ex)
@@ -138,6 +194,7 @@ namespace ServerF
                 Console.WriteLine($"Error receiving message: {ex.Message}");
             }
         }
+
 
         // Handle the received drone message based on its code
         private void HandleDroneMessage(DroneMessageCode code, DroneData data)
