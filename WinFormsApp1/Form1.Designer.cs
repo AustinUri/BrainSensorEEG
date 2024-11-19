@@ -42,7 +42,7 @@ namespace WinFormsApp1
             label_Dheight = new Label();
             label_Dstatus = new Label();
             listbox_instru = new ListBox();
-            PopulateInstructions();
+            button_StartProccess = new Button();
             SuspendLayout();
             // 
             // label_Battery
@@ -118,16 +118,27 @@ namespace WinFormsApp1
             listbox_instru.Anchor = AnchorStyles.None;
             listbox_instru.FormattingEnabled = true;
             listbox_instru.ItemHeight = 25;
-            listbox_instru.Location = new Point(871, 113);
+            listbox_instru.Location = new Point(849, 24);
             listbox_instru.Name = "listbox_instru";
-            listbox_instru.Size = new Size(259, 129);
+            listbox_instru.Size = new Size(322, 179);
             listbox_instru.TabIndex = 10;
+            // 
+            // button_StartProccess
+            // 
+            button_StartProccess.Location = new Point(847, 249);
+            button_StartProccess.Name = "button_StartProccess";
+            button_StartProccess.Size = new Size(112, 34);
+            button_StartProccess.TabIndex = 11;
+            button_StartProccess.Text = "Start";
+            button_StartProccess.UseVisualStyleBackColor = true;
+            button_StartProccess.Click += button_StartProccess_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1245, 357);
+            Controls.Add(button_StartProccess);
             Controls.Add(listbox_instru);
             Controls.Add(label_Dstatus);
             Controls.Add(label_Dheight);
@@ -176,6 +187,6 @@ namespace WinFormsApp1
             listbox_instru.Dock = DockStyle.Fill;
         }
 
-
+        private Button button_StartProccess;
     }
 }

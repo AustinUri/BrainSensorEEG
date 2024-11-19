@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ServerF;
+using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Timer = System.Windows.Forms.Timer;
+using WinFormsApp1;
 
 
 namespace NeuroTech.Analysis
@@ -12,18 +13,58 @@ namespace NeuroTech.Analysis
     internal class BarChartAnalyzer
     {
 
-        private ScreenshotTimer _ScreenshotTimer;
-        private int _times;
+        private ScreenshotTimer _screenshotTimer;
+        private int _iterations;
+        private Server _server;
+        private Form1 Form1;
 
-        public BarChartAnalyzer(int i) {
-        
-               this._times = i;
-        
+
+        public BarChartAnalyzer(int i,Server server,Form1 mainForm) {
+            this._server = server;
+            _iterations = i;
+            Form1 = mainForm;
+        }
+
+        public async Task StartProcessAsync()
+        {
+            try
+            {
+                for (int i = 0; i < _iterations; i++)
+                {
+                    Console.WriteLine($"Starting process iteration {i + 1}/{_iterations}");
+
+                    // Step 1: Take 5 screenshots
+                    var screenshots = _screenshotTimer.TakeScreenshots(5);
+
+                    // Step 2: Analyze screenshots to determine the command
+                    DroneCommand command = AnalyzeScreenshots(screenshots);
+
+                    // Step 3: Send the determined command to the Python server
+                    _server.SendCommand(_server.GetStream(), command);
+
+                    Console.WriteLine($"Command sent: {command}");
+
+                    // Wait 5 seconds before the next iteration
+                    await Task.Delay(5000);
+                }
+
+                Console.WriteLine("Process completed.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during process: {ex.Message}");
+            }
+        }
+
+        private DroneCommand AnalyzeScreenshots(List<Bitmap> screenshots)
+        {
+            // Placeholder logic for analyzing screenshots
+            // Implement your actual analysis here
+            Console.WriteLine("Analyzing screenshots...");
+            return DroneCommand.MoveUp; // Example command
         }
 
 
-        
-        
 
 
 
@@ -32,40 +73,34 @@ namespace NeuroTech.Analysis
 
     public class ScreenshotTimer
     {
-        private Timer _timer;
-        private int _count = 0;
         private ScreenCapture _screenCapture;
-        int _times;
 
-        public ScreenshotTimer(int times)
+        public ScreenshotTimer()
         {
             _screenCapture = new ScreenCapture();
-            _timer = new Timer();
-            _timer.Interval = 1000; // Interval set to 1000 milliseconds (1 second)
-            _timer.Tick += Timer_Tick;
-            _times = times;
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        public List<Bitmap> TakeScreenshots(int count)
         {
-            if (_count < 5)
+            List<Bitmap> screenshots = new List<Bitmap>();
+
+            for (int i = 0; i < count; i++)
             {
                 Bitmap screenshot = _screenCapture.CaptureScreen();
-                screenshot.Save($"screenshot{this._count*this._times}.png", ImageFormat.Png); // Save screenshot to disk
-                _count++;
-            }
-            else
-            {
-                this._timer.Stop(); // Stop the timer after 5 screenshots
-                this._count = 0; // Reset the count if you need to restart the process later
-            }
-        }
+                screenshots.Add(screenshot);
 
-        public void Start()
-        {
-            _timer.Start();
+                // Save the screenshot for debugging purposes
+                screenshot.Save($"screenshot_{i}.png", ImageFormat.Png);
+
+                // Wait 1 second
+                Thread.Sleep(1000);
+            }
+
+            return screenshots;
         }
     }
+
+
 
     public class ScreenCapture
     {
@@ -73,8 +108,8 @@ namespace NeuroTech.Analysis
         {
             Rectangle bounds = Screen.PrimaryScreen.Bounds;
             Bitmap screenshot = new Bitmap(bounds.Width, bounds.Height, PixelFormat.Format32bppArgb);
-            Graphics graphic = Graphics.FromImage(screenshot);
-            graphic.CopyFromScreen(bounds.X, bounds.Y, 0, 0, bounds.Size, CopyPixelOperation.SourceCopy);
+            Graphics graphics = Graphics.FromImage(screenshot);
+            graphics.CopyFromScreen(bounds.X, bounds.Y, 0, 0, bounds.Size, CopyPixelOperation.SourceCopy);
             return screenshot;
         }
 

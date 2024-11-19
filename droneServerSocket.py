@@ -62,7 +62,7 @@ def send_message(client_socket, code, data):
         # Combine code, length, and JSON data into one message
         msg_len = len(json_bytes).to_bytes(4, byteorder='big')
         message = msg_code + msg_len + json_bytes
-        print(len(msg_code),len(msg_len),len(json_bytes))
+        print('len code',len(msg_code),'len len',len(msg_len),'len json',len(json_bytes))
         print(message)
         client_socket.sendall(message)
     else:
