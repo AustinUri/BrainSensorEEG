@@ -1,132 +1,274 @@
-﻿using ServerF;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
+using System.Drawing;
+using System.Threading;
 using System.Threading.Tasks;
-using WinFormsApp1;
-
+using System.Windows.Forms;
 
 namespace NeuroTech.Analysis
 {
-    internal class BarChartAnalyzer
+    public enum DroneCommand : byte
     {
+        Takeoff = 0b000,    // 0 in decimal
+        Land = 0b001,       // 1 in decimal
+        TurnLeft = 0b010,   // 2 in decimal
+        TurnRight = 0b011,  // 3 in decimal
+        MoveLeft = 0b100,   // 4 in decimal
+        MoveRight = 0b101,  // 5 in decimal
+        MoveUp = 0b110,     // 6 in decimal
+        MoveDown = 0b111,    // 7 in decimal
+        Hover = 0b1000      // 8 in decimal
+    }
 
-        private ScreenshotTimer _screenshotTimer;
-        private int _iterations;
-        private Server _server;
-        private Form1 Form1;
-
-
-        public BarChartAnalyzer(int i,Server server,Form1 mainForm) {
-            this._server = server;
-            _iterations = i;
-            Form1 = mainForm;
-        }
-
-        public async Task StartProcessAsync()
+    public class ScreenCapture
+    {
+        public Bitmap CaptureScreen()
         {
             try
             {
-                for (int i = 0; i < _iterations; i++)
+                Rectangle screenBounds = Screen.PrimaryScreen.Bounds;
+                Bitmap screenshot = new Bitmap(screenBounds.Width, screenBounds.Height);
+                using (Graphics g = Graphics.FromImage(screenshot))
                 {
-                    Console.WriteLine($"Starting process iteration {i + 1}/{_iterations}");
-
-                    // Step 1: Take 5 screenshots
-                    var screenshots = _screenshotTimer.TakeScreenshots(5);
-
-                    // Step 2: Analyze screenshots to determine the command
-                    DroneCommand command = AnalyzeScreenshots(screenshots);
-
-                    // Step 3: Send the determined command to the Python server
-                    _server.SendCommand(_server.GetStream(), command);
-
-                    Console.WriteLine($"Command sent: {command}");
-
-                    // Wait 5 seconds before the next iteration
-                    await Task.Delay(5000);
+                    g.CopyFromScreen(screenBounds.Location, Point.Empty, screenBounds.Size);
                 }
-
-                Console.WriteLine("Process completed.");
+                return screenshot;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error during process: {ex.Message}");
+                Console.WriteLine($"Error capturing screen: {ex.Message}");
+                throw;
             }
         }
-
-        private DroneCommand AnalyzeScreenshots(List<Bitmap> screenshots)
-        {
-            // Placeholder logic for analyzing screenshots
-            // Implement your actual analysis here
-            Console.WriteLine("Analyzing screenshots...");
-            return DroneCommand.MoveUp; // Example command
-        }
-
-
-
-
-
     }
-
 
     public class ScreenshotTimer
     {
+        private int _interval; // Interval between screenshots in milliseconds
+        private int _numberOfScreenshots;
         private ScreenCapture _screenCapture;
 
-        public ScreenshotTimer()
+        public ScreenshotTimer(int numberOfScreenshots, int intervalInSeconds = 1)
         {
+            _numberOfScreenshots = numberOfScreenshots;
+            _interval = intervalInSeconds * 1000; // Convert seconds to milliseconds
             _screenCapture = new ScreenCapture();
         }
 
-        public List<Bitmap> TakeScreenshots(int count)
+        public List<Bitmap> CaptureScreenshots()
         {
             List<Bitmap> screenshots = new List<Bitmap>();
 
-            for (int i = 0; i < count; i++)
+            try
             {
-                Bitmap screenshot = _screenCapture.CaptureScreen();
-                screenshots.Add(screenshot);
+                for (int i = 0; i < _numberOfScreenshots; i++)
+                {
+                    Console.WriteLine($"Capturing screenshot {i + 1}...");
+                    Bitmap screenshot = _screenCapture.CaptureScreen();
+                    screenshots.Add(screenshot);
 
-                // Save the screenshot for debugging purposes
-                screenshot.Save($"screenshot_{i}.png", ImageFormat.Png);
+                    if (i < _numberOfScreenshots - 1) // Sleep only if more screenshots are to be taken
+                    {
+                        Thread.Sleep(_interval); // Wait for the specified interval
+                    }
+                }
 
-                // Wait 1 second
-                Thread.Sleep(1000);
+                Console.WriteLine("All screenshots captured successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error capturing screenshots: {ex.Message}");
             }
 
             return screenshots;
         }
     }
 
-
-
-    public class ScreenCapture
+    public class BarAnalysisResult
     {
-        public Bitmap CaptureScreen()
-        {
-            Rectangle bounds = Screen.PrimaryScreen.Bounds;
-            Bitmap screenshot = new Bitmap(bounds.Width, bounds.Height, PixelFormat.Format32bppArgb);
-            Graphics graphics = Graphics.FromImage(screenshot);
-            graphics.CopyFromScreen(bounds.X, bounds.Y, 0, 0, bounds.Size, CopyPixelOperation.SourceCopy);
-            return screenshot;
-        }
-
-
-        public (int R, int G, int B) CapturePixel(Point position)
-        {
-            using (Bitmap bmp = new Bitmap(1, 1))
-            {
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    g.CopyFromScreen(position.X, position.Y, 0, 0, new Size(1, 1));
-                }
-                Color color = bmp.GetPixel(0, 0);
-                return (color.R, color.G, color.B); // Return RGB as a tuple
-            }
-        }
+        public int Height { get; set; }
+        public int Width { get; set; }
+        public int PositionX { get; set; }
+        public Bitmap CroppedBarImage { get; set; }
     }
 
+    public class BarChartAnalyzer
+    {
+        private ScreenshotTimer _screenshotTimer;
 
+        public BarChartAnalyzer(ScreenshotTimer screenshotTimer)
+        {
+            _screenshotTimer = screenshotTimer;
+        }
+
+        public async Task<DroneCommand> StartAnalysisAsync()
+        {
+            try
+            {
+                Console.WriteLine("Starting screenshot capture...");
+
+                // Step 1: Use ScreenshotTimer to capture 5 screenshots
+                List<Bitmap> screenshots = _screenshotTimer.CaptureScreenshots();
+
+                if (screenshots.Count == 0)
+                {
+                    throw new Exception("No screenshots captured.");
+                }
+
+                Console.WriteLine("Screenshots captured successfully. Starting analysis...");
+
+                // Step 2: Analyze each screenshot for bar graphs
+                List<List<BarAnalysisResult>> allResults = new List<List<BarAnalysisResult>>();
+                for (int i = 0; i < screenshots.Count; i++)
+                {
+                    Console.WriteLine($"Analyzing screenshot {i + 1}...");
+                    List<BarAnalysisResult> results = AnalyzeChart(screenshots[i]);
+                    allResults.Add(results);
+                }
+
+                Console.WriteLine("All screenshots analyzed. Comparing results...");
+
+                // Step 3: Compare bar results across screenshots and decide a command
+                DroneCommand command = CompareChartsAndDecideCommand(allResults);
+
+                Console.WriteLine($"Command decided: {command}");
+                return command;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during analysis: {ex.Message}");
+                return DroneCommand.Land; // Default fallback command
+            }
+        }
+
+        private List<BarAnalysisResult> AnalyzeChart(Bitmap screenshot)
+        {
+            List<BarAnalysisResult> barResults = new List<BarAnalysisResult>();
+
+            try
+            {
+                // Step 1: Define the Region of Interest (ROI)
+                Rectangle roi = new Rectangle(0, screenshot.Height / 2, screenshot.Width, screenshot.Height / 2);
+                Bitmap croppedImage = CropRectangleFromBitmap(screenshot, roi);
+
+                // Step 2: Filter bars based on color
+                Bitmap filteredImage = FilterBarColors(croppedImage);
+
+                // Step 3: Detect and analyze bar rectangles
+                List<Rectangle> barRectangles = FindBarRectangles(filteredImage);
+                foreach (Rectangle rect in barRectangles)
+                {
+                    int barHeight = rect.Height;
+                    int barWidth = rect.Width;
+                    int barPositionX = rect.X;
+
+                    Bitmap croppedBar = CropRectangleFromBitmap(croppedImage, rect);
+
+                    barResults.Add(new BarAnalysisResult
+                    {
+                        Height = barHeight,
+                        Width = barWidth,
+                        PositionX = barPositionX,
+                        CroppedBarImage = croppedBar
+                    });
+
+                    Console.WriteLine($"Bar detected: Height={barHeight}, Width={barWidth}, X-Position={barPositionX}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error analyzing chart: {ex.Message}");
+            }
+
+            return barResults;
+        }
+
+        private DroneCommand CompareChartsAndDecideCommand(List<List<BarAnalysisResult>> allResults)
+        {
+            // Assume all screenshots have the same number of bars
+            int numBars = allResults[0].Count;
+
+            for (int barIndex = 0; barIndex < numBars; barIndex++)
+            {
+                // Collect heights of this bar across all screenshots
+                List<int> barHeights = new List<int>();
+                foreach (var result in allResults)
+                {
+                    barHeights.Add(result[barIndex].Height);
+                }
+
+                // Analyze trends for this bar
+                string trend = AnalyzeTrends(barHeights);
+                Console.WriteLine($"Bar {barIndex + 1}: {trend}");
+
+                // Example logic to decide command based on trends
+                if (trend == "Increasing")
+                {
+                    return DroneCommand.MoveUp;
+                }
+                else if (trend == "Decreasing")
+                {
+                    return DroneCommand.MoveDown;
+                }
+            }
+
+            // Default fallback command
+            return DroneCommand.Land;
+        }
+
+        private string AnalyzeTrends(List<int> barHeights)
+        {
+            bool increasing = true, decreasing = true;
+
+            for (int i = 1; i < barHeights.Count; i++)
+            {
+                if (barHeights[i] < barHeights[i - 1]) increasing = false;
+                if (barHeights[i] > barHeights[i - 1]) decreasing = false;
+            }
+
+            if (increasing) return "Increasing";
+            if (decreasing) return "Decreasing";
+            return "Stable";
+        }
+
+        private Bitmap FilterBarColors(Bitmap image)
+        {
+            Bitmap filteredImage = new Bitmap(image.Width, image.Height);
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    Color pixel = image.GetPixel(x, y);
+
+                    if ((pixel.R < 100 && pixel.G < 100 && pixel.B > 150) || // Blue
+                        (pixel.R > 150 && pixel.G < 100 && pixel.B > 150))   // Purple
+                    {
+                        filteredImage.SetPixel(x, y, Color.Black);
+                    }
+                    else
+                    {
+                        filteredImage.SetPixel(x, y, Color.White);
+                    }
+                }
+            }
+            return filteredImage;
+        }
+
+        private List<Rectangle> FindBarRectangles(Bitmap binaryImage)
+        {
+            List<Rectangle> barRectangles = new List<Rectangle>();
+            // Detect rectangles for bar graphs (same logic as before)
+            return barRectangles;
+        }
+
+        private Bitmap CropRectangleFromBitmap(Bitmap source, Rectangle rect)
+        {
+            Bitmap cropped = new Bitmap(rect.Width, rect.Height);
+            using (Graphics g = Graphics.FromImage(cropped))
+            {
+                g.DrawImage(source, new Rectangle(0, 0, rect.Width, rect.Height), rect, GraphicsUnit.Pixel);
+            }
+            return cropped;
+        }
+    }
 }

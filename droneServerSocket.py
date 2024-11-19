@@ -132,34 +132,22 @@ def main():
 
 def receive_command(client_socket):
     try:
-        # 1. Read the command code (1 byte)
-        command_code = client_socket.recv(1)
-        if not command_code:
-            print("No data received. Closing connection.")
-            return None
-        command = DroneCommand(int.from_bytes(command_code, byteorder="big"))
-        print(f"Received command: {command.name}")
+        # Step 1: Read the first byte (message code)
+        message_code = client_socket.recv(1)
+        print(f"Message Code: {int.from_bytes(message_code, 'big')}")
 
-        # 2. Read the payload length (4 bytes, Big Endian)
-        length_buffer = client_socket.recv(4)
-        if len(length_buffer) < 4:
-            raise ValueError("Failed to receive the payload length.")
-        payload_length = int.from_bytes(length_buffer, byteorder="big")
-        print(f"Payload length: {payload_length}")
+        # Step 2: Read the rest of the message (JSON payload)
+        json_payload = client_socket.recv(1024).decode('utf-8')  # Adjust buffer size as needed
+        data = json.loads(json_payload)
+        print(f"Received Data: {data}")
 
-        # 3. Read the JSON payload (if any)
-        if payload_length > 0:
-            json_buffer = client_socket.recv(payload_length)
-            if len(json_buffer) < payload_length:
-                raise ValueError("Failed to receive the full payload.")
-            payload = json.loads(json_buffer.decode("utf-8"))
-            print(f"Payload data: {payload}")
-        else:
-            payload = None
-            print("No payload provided.")
-
-        # 4. Handle the command
-        handle_command(command, payload)
+        # Step 3: Process based on message code
+        if int.from_bytes(message_code, 'big') == 1:  # Example: Command message
+            command = data.get("command")
+            trend = data["details"].get("trend")
+            print(f"Drone Command: {command}, Trend: {trend}")
+            #4 Step 4:Handle command
+            handle_command(command)
 
     except Exception as e:
         print(f"Error receiving command: {e}")

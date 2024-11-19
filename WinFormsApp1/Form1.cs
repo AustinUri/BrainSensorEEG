@@ -12,10 +12,23 @@ using ServerF;
 namespace WinFormsApp1
 {
 
+
+    public enum DroneCommand : byte
+    {
+        Takeoff = 0b000,
+        Land = 0b001,
+        TurnLeft = 0b010,
+        TurnRight = 0b011,
+        MoveLeft = 0b100,
+        MoveRight = 0b101,
+        MoveUp = 0b110,
+        MoveDown = 0b111,
+        Hover = 0b1000
+    }
+
     public partial class Form1 : Form
     {
         private Server _server;
-        private BarChartAnalyzer _barChartAnalyzer;
 
 
         public Form1()
@@ -27,7 +40,6 @@ namespace WinFormsApp1
                 this.Location = new Point(0, 0); // Position the form on the top left corner
                 _server = new Server(this);
                 Task.Run(() => _server.Start()); // Run server on a separate thread
-                this._barChartAnalyzer = new BarChartAnalyzer(5,_server);
             }
             catch (Exception ex)
             {
@@ -44,7 +56,24 @@ namespace WinFormsApp1
 
         private void button_StartProccess_Click(object sender, EventArgs e)
         {
-            this._barChartAnalyzer.StartProcessAsync();
+            try
+            {
+
+                for (int i = 0; i < 5; i++)
+                {
+                    ScreenshotTimer screenshotTimer = new ScreenshotTimer(5); // Initialize ScreenshotTimer
+                    BarChartAnalyzer analyzer = new BarChartAnalyzer(screenshotTimer); // Pass it to BarChartAnalyzer
+
+                    DroneCommand command = await analyzer.StartAnalysisAsync(); // Analyze and get the command
+
+                    Console.WriteLine($"Drone Command: {command}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+
         }
     }
 }

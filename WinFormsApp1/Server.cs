@@ -22,14 +22,15 @@ namespace ServerF
     // Enum for commands to control the drone
     public enum DroneCommand : byte
     {
-        Takeoff = 0b000,    // 0 in decimal
-        Land = 0b001,       // 1 in decimal
-        TurnLeft = 0b010,   // 2 in decimal
-        TurnRight = 0b011,  // 3 in decimal
-        MoveLeft = 0b100,   // 4 in decimal
-        MoveRight = 0b101,  // 5 in decimal
-        MoveUp = 0b110,     // 6 in decimal
-        MoveDown = 0b111    // 7 in decimal
+        Takeoff = 0b000,
+        Land = 0b001,
+        TurnLeft = 0b010,
+        TurnRight = 0b011,
+        MoveLeft = 0b100,
+        MoveRight = 0b101,
+        MoveUp = 0b110,
+        MoveDown = 0b111,
+        Hover = 0b1000
     }
 
     public class DroneData
@@ -109,7 +110,7 @@ namespace ServerF
         }
 
         // Process a single message from the client
-        private void ReadExact( byte[] buffer, int offset, int count)
+        private void ReadExact(byte[] buffer, int offset, int count)
         {
             int bytesRead = 0;
             while (bytesRead < count)
@@ -122,35 +123,35 @@ namespace ServerF
         }
 
 
-        public void SendCommand(NetworkStream stream, DroneCommand command, object commandData = null)
+        public void SendCommand(NetworkStream stream, DroneCommand command, string trend)
         {
             try
             {
-                // 1. Convert the command to a single byte
-                byte[] commandBuffer = new byte[] { (byte)command };
+                // Step 1: Define the message code for DroneCommand (e.g., 0x01)
+                byte messageCode = 0x01; // Example: 0x01 for command messages
 
-                // 2. Serialize the command data to JSON, if any, and encode to bytes
-                string jsonData = commandData != null ? JsonConvert.SerializeObject(commandData) : string.Empty;
-                byte[] jsonBuffer = Encoding.UTF8.GetBytes(jsonData);
-
-                // 3. Get the length of the JSON data as a 4-byte array (Big Endian)
-                byte[] lengthBuffer = BitConverter.GetBytes(jsonBuffer.Length);
-                if (BitConverter.IsLittleEndian)
+                // Step 2: Create the JSON response with command and details
+                var response = new
                 {
-                    Array.Reverse(lengthBuffer); // Convert to Big Endian if system uses Little Endian
-                }
+                    command = command.ToString(),
+                    details = new
+                    {
+                        timestamp = DateTime.UtcNow.ToString("o"), // ISO 8601 format
+                        trend = trend // Additional context
+                    }
+                };
 
-                // 4. Combine the command code, length, and JSON payload
-                byte[] message = new byte[commandBuffer.Length + lengthBuffer.Length + jsonBuffer.Length];
-                Buffer.BlockCopy(commandBuffer, 0, message, 0, commandBuffer.Length);
-                Buffer.BlockCopy(lengthBuffer, 0, message, commandBuffer.Length, lengthBuffer.Length);
-                Buffer.BlockCopy(jsonBuffer, 0, message, commandBuffer.Length + lengthBuffer.Length, jsonBuffer.Length);
+                string jsonResponse = JsonConvert.SerializeObject(response);
+                byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonResponse);
 
-                // 5. Send the complete message to the client
-                stream.Write(message, 0, message.Length);
-                Console.WriteLine($"Sent command: {command}");
-                Console.WriteLine($"Command length: {jsonBuffer.Length}");
-                Console.WriteLine($"Command JSON: {jsonData}");
+                // Step 3: Combine message code and JSON data
+                byte[] fullMessage = new byte[1 + jsonBytes.Length];
+                fullMessage[0] = messageCode; // First byte: Message code
+                Array.Copy(jsonBytes, 0, fullMessage, 1, jsonBytes.Length); // Remaining bytes: JSON payload
+
+                // Step 4: Send the combined message
+                stream.Write(fullMessage, 0, fullMessage.Length);
+                Console.WriteLine($"Message sent: Code={messageCode}, JSON={jsonResponse}");
             }
             catch (Exception ex)
             {
@@ -159,13 +160,15 @@ namespace ServerF
         }
 
 
+
+
         private void ProcessReceivedMessage(NetworkStream stream)
         {
             try
             {
                 // 1. Read the message code (1 byte)
                 byte[] msgCodeBuffer = new byte[1];
-                ReadExact( msgCodeBuffer, 0, 1);
+                ReadExact(msgCodeBuffer, 0, 1);
                 DroneMessageCode code = (DroneMessageCode)msgCodeBuffer[0];
                 Console.WriteLine($"Received message code: {code}");
                 Console.WriteLine("Raw Message Code Buffer: " + BitConverter.ToString(msgCodeBuffer));
@@ -179,7 +182,7 @@ namespace ServerF
                     Console.WriteLine($"Message length: {msgLength}");
                     Console.WriteLine("Raw Length Buffer: " + BitConverter.ToString(lengthBuffer));
 
-                // 3. Read and deserialize the JSON payload if the message code is 'Connected'
+                    // 3. Read and deserialize the JSON payload if the message code is 'Connected'
                     byte[] jsonBuffer = new byte[msgLength];
                     ReadExact(jsonBuffer, 0, msgLength);
                     string jsonData = Encoding.UTF8.GetString(jsonBuffer);
@@ -198,8 +201,8 @@ namespace ServerF
             {
                 Console.WriteLine($"Error receiving message: {ex.Message}");
             }
-        }
 
+        }
 
         // Handle the received drone message based on its code
         private void HandleDroneMessage(DroneMessageCode code, DroneData data)
@@ -239,5 +242,6 @@ namespace ServerF
                 form1.ShowAlert(message, code.ToString());
             }));
         }
+
     }
 }
