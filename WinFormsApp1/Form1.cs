@@ -13,18 +13,7 @@ namespace WinFormsApp1
 {
 
 
-    public enum DroneCommand : byte
-    {
-        Takeoff = 0b000,
-        Land = 0b001,
-        TurnLeft = 0b010,
-        TurnRight = 0b011,
-        MoveLeft = 0b100,
-        MoveRight = 0b101,
-        MoveUp = 0b110,
-        MoveDown = 0b111,
-        Hover = 0b1000
-    }
+
 
     public partial class Form1 : Form
     {
@@ -64,8 +53,8 @@ namespace WinFormsApp1
                     ScreenshotTimer screenshotTimer = new ScreenshotTimer(5); // Initialize ScreenshotTimer
                     BarChartAnalyzer analyzer = new BarChartAnalyzer(screenshotTimer); // Pass it to BarChartAnalyzer
 
-                    DroneCommand command = (DroneCommand)await analyzer.StartAnalysisAsync(); // Analyze and get the command
-                    this._server.SendCommand(this._server.GetStream(),command,);
+                    ServerF.DroneCommand command = (ServerF.DroneCommand)await analyzer.StartAnalysisAsync(); // Analyze and get the command
+                    this._server.SendCommand(this._server.GetStream(),command);
                     Console.WriteLine($"Drone Command: {command}");
 
                     

@@ -47,12 +47,14 @@ namespace NeuroTech.Analysis
         private int _interval; // Interval between screenshots in milliseconds
         private int _numberOfScreenshots;
         private ScreenCapture _screenCapture;
+        private string _saveDirectory;
 
         public ScreenshotTimer(int numberOfScreenshots, int intervalInSeconds = 1)
         {
             _numberOfScreenshots = numberOfScreenshots;
             _interval = intervalInSeconds * 1000; // Convert seconds to milliseconds
             _screenCapture = new ScreenCapture();
+            _saveDirectory = AppDomain.CurrentDomain.BaseDirectory;
         }
 
         public List<Bitmap> CaptureScreenshots()
@@ -66,6 +68,8 @@ namespace NeuroTech.Analysis
                     Console.WriteLine($"Capturing screenshot {i + 1}...");
                     Bitmap screenshot = _screenCapture.CaptureScreen();
                     screenshots.Add(screenshot);
+                    string filePath = Path.Combine(_saveDirectory, $"screenshot_{i + 1}.png");
+                    screenshot.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
 
                     if (i < _numberOfScreenshots - 1) // Sleep only if more screenshots are to be taken
                     {

@@ -101,19 +101,14 @@ namespace ServerF
         }
 
 
-        public void SendCommand(NetworkStream stream, DroneCommand command, string trend)
+        public void SendCommand(NetworkStream stream, DroneCommand command)
         {
             try
             {
-                byte messageCode = 0x01; // Message code for DroneCommand
+                byte messageCode = 0x01;
                 var response = new
                 {
-                    command = command.ToString(),
-                    details = new
-                    {
-                        timestamp = DateTime.UtcNow.ToString("o"),
-                        trend = trend
-                    }
+                    command = command.ToString()
                 };
 
                 string jsonResponse = JsonConvert.SerializeObject(response);
@@ -122,13 +117,13 @@ namespace ServerF
                 byte[] messageLength = BitConverter.GetBytes(jsonBytes.Length);
                 if (BitConverter.IsLittleEndian)
                 {
-                    Array.Reverse(messageLength); // Ensure big-endian format
+                    Array.Reverse(messageLength);
                 }
 
                 byte[] fullMessage = new byte[1 + 4 + jsonBytes.Length];
-                fullMessage[0] = messageCode; // First byte: Message code
-                Array.Copy(messageLength, 0, fullMessage, 1, 4); // Next 4 bytes: Message length
-                Array.Copy(jsonBytes, 0, fullMessage, 5, jsonBytes.Length); // Remaining bytes: JSON data
+                fullMessage[0] = messageCode;
+                Array.Copy(messageLength, 0, fullMessage, 1, 4);
+                Array.Copy(jsonBytes, 0, fullMessage, 5, jsonBytes.Length);
 
                 stream.Write(fullMessage, 0, fullMessage.Length);
                 Console.WriteLine($"Message sent: {jsonResponse}");
@@ -138,6 +133,7 @@ namespace ServerF
                 Console.WriteLine($"Error sending command: {ex.Message}");
             }
         }
+
 
         private void ReceiveAndProcessMessages()
         {
@@ -188,12 +184,7 @@ namespace ServerF
                 DroneData data = JsonConvert.DeserializeObject<DroneData>(jsonData);
                 HandleDroneMessage(code, data);
                 
-                // Step 4: Determine command based on received data
-                DroneCommand command = DroneCommand.Takeoff; // Example: Decide command dynamically
-                string trend = "Increasing"; // Example trend
 
-                // Step 5: Send response to Python client
-                SendCommand(stream, command, trend);
             }
             catch (Exception ex)
             {

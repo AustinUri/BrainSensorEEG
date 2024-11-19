@@ -9,7 +9,6 @@ import socket
 import json
 from djitellopy import Tello
 from enum import Enum
-import time
 
 # Enum for drone message codes to communicate with C#
 class DroneMessageCode(Enum):
@@ -124,6 +123,11 @@ def main():
     
     receive_command(client_socket)
 
+
+    #security 
+    if tello.get_height() is not 0:
+        tello.land()
+
     # Close the socket after use
     client_socket.close()
 
@@ -163,9 +167,15 @@ def receive_command(client_socket):
         if command == "Takeoff":
             handle_command(DroneCommand.TAKEOFF)        
         elif command == "Land":
-            handle_command(DroneCommand.LAND)        
+            handle_command(DroneCommand.LAND) 
+        elif command == "MoveUp" :
+            height=tello.get_height()
+            if height == 0 :
+                handle_command(DroneCommand.TAKEOFF,None)
+            else :
+                handle_command(DroneCommand.MOVE_UP,None)       
         else:
-            print("ffs")            
+            print("ffs")
 
 
     except Exception as e:
@@ -181,7 +191,6 @@ def handle_command(command : DroneCommand, payload):
     if command == DroneCommand.TAKEOFF:
         print("Executing Takeoff...")
         tello.takeoff()
-        # Add your drone's takeoff logic here
     elif command == DroneCommand.LAND:
         print("Executing Land...")
         tello.land()
