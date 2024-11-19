@@ -54,7 +54,7 @@ namespace WinFormsApp1
             label_Dstatus.Invoke((MethodInvoker)(() => label_Dstatus.Text = "Status: Connected"));
         }
 
-        private void button_StartProccess_Click(object sender, EventArgs e)
+        private async void button_StartProccess_Click(object sender, EventArgs e)
         {
             try
             {
@@ -64,9 +64,11 @@ namespace WinFormsApp1
                     ScreenshotTimer screenshotTimer = new ScreenshotTimer(5); // Initialize ScreenshotTimer
                     BarChartAnalyzer analyzer = new BarChartAnalyzer(screenshotTimer); // Pass it to BarChartAnalyzer
 
-                    DroneCommand command = await analyzer.StartAnalysisAsync(); // Analyze and get the command
-
+                    DroneCommand command = (DroneCommand)await analyzer.StartAnalysisAsync(); // Analyze and get the command
+                    this._server.SendCommand(this._server.GetStream(),command,);
                     Console.WriteLine($"Drone Command: {command}");
+
+                    
                 }
             }
             catch (Exception ex)

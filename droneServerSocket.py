@@ -31,6 +31,7 @@ class DroneCommand(Enum):
     MOVE_RIGHT = 5
     MOVE_UP = 6
     MOVE_DOWN = 7
+    HOVER = 8
 
 # Socket configuration
 HOST = 'localhost'
@@ -132,27 +133,46 @@ def main():
 
 def receive_command(client_socket):
     try:
-        # Step 1: Read the first byte (message code)
+        # Step 1: Read the message code (1 byte)
         message_code = client_socket.recv(1)
-        print(f"Message Code: {int.from_bytes(message_code, 'big')}")
+        if not message_code:
+            raise ValueError("No message code received.")
+        message_code = int.from_bytes(message_code, 'big')
+        print(f"Message Code: {message_code}")
 
-        # Step 2: Read the rest of the message (JSON payload)
-        json_payload = client_socket.recv(1024).decode('utf-8')  # Adjust buffer size as needed
+        # Step 2: Read the message length (4 bytes)
+        length_buffer = client_socket.recv(4)
+        if len(length_buffer) < 4:
+            raise ValueError("Invalid message length received.")
+        message_length = int.from_bytes(length_buffer, 'big')
+        print(f"Message Length: {message_length}")
+
+        # Step 3: Read the JSON payload
+        json_payload = client_socket.recv(message_length).decode('utf-8')
+        print(f"JSON Payload: {json_payload}")
+
+        # Step 4: Parse the JSON payload
         data = json.loads(json_payload)
-        print(f"Received Data: {data}")
 
-        # Step 3: Process based on message code
-        if int.from_bytes(message_code, 'big') == 1:  # Example: Command message
-            command = data.get("command")
-            trend = data["details"].get("trend")
-            print(f"Drone Command: {command}, Trend: {trend}")
-            #4 Step 4:Handle command
-            handle_command(command)
+        # Step 5: Extract the command and process it
+        command = data.get("command")
+        if command is None:
+            raise ValueError("No command found in the received data.")
+        print(f"Command: {command}")
+
+        if command == "Takeoff":
+            handle_command(DroneCommand.TAKEOFF)        
+        elif command == "Land":
+            handle_command(DroneCommand.LAND)        
+        else:
+            print("ffs")            
+
 
     except Exception as e:
         print(f"Error receiving command: {e}")
 
-def handle_command(command, payload):
+
+def handle_command(command : DroneCommand, payload):
     """
     Process the command based on its type.
     :param command: The DroneCommand received.
@@ -168,7 +188,7 @@ def handle_command(command, payload):
     elif command == DroneCommand.TURN_LEFT:
         distance = payload.get("Distance", 0) if payload else 0
         print(f"Turning Left by {distance} units...")
-        tello.rotate_counter_clockwise(90)
+        tello.rotate_counter_clockwise(15)
         # Add turn left logic here
     elif command == DroneCommand.MOVE_LEFT:
         distance = payload.get("Distance", 0) if payload else 0
@@ -183,7 +203,7 @@ def handle_command(command, payload):
     elif command == DroneCommand.MOVE_DOWN:
         distance = payload.get("Distance", 0) if payload else 0
         print(f"Moving Down by {distance} units...")
-        tello.move_down
+        tello.move_down()
     else:
         print(f"Unknown command: {command.name}")
 

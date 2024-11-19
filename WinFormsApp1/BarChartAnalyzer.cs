@@ -131,6 +131,7 @@ namespace NeuroTech.Analysis
                 // Step 3: Compare bar results across screenshots and decide a command
                 DroneCommand command = CompareChartsAndDecideCommand(allResults);
 
+
                 Console.WriteLine($"Command decided: {command}");
                 return command;
             }
@@ -234,30 +235,69 @@ namespace NeuroTech.Analysis
         private Bitmap FilterBarColors(Bitmap image)
         {
             Bitmap filteredImage = new Bitmap(image.Width, image.Height);
+
             for (int y = 0; y < image.Height; y++)
             {
                 for (int x = 0; x < image.Width; x++)
                 {
                     Color pixel = image.GetPixel(x, y);
 
-                    if ((pixel.R < 100 && pixel.G < 100 && pixel.B > 150) || // Blue
-                        (pixel.R > 150 && pixel.G < 100 && pixel.B > 150))   // Purple
+                    // Detect black bars (low RGB values) and ignore white background
+                    if (pixel.R < 50 && pixel.G < 50 && pixel.B < 50) // Black bars
                     {
                         filteredImage.SetPixel(x, y, Color.Black);
                     }
                     else
                     {
-                        filteredImage.SetPixel(x, y, Color.White);
+                        filteredImage.SetPixel(x, y, Color.White); // Set everything else to white
                     }
                 }
             }
+
             return filteredImage;
         }
 
         private List<Rectangle> FindBarRectangles(Bitmap binaryImage)
         {
             List<Rectangle> barRectangles = new List<Rectangle>();
-            // Detect rectangles for bar graphs (same logic as before)
+
+            int width = binaryImage.Width;
+            int height = binaryImage.Height;
+
+            bool inBar = false;
+            int barStartX = 0;
+
+            for (int x = 0; x < width; x++)
+            {
+                bool columnHasBlack = false;
+
+                for (int y = 0; y < height; y++)
+                {
+                    if (binaryImage.GetPixel(x, y).ToArgb() == Color.Black.ToArgb())
+                    {
+                        columnHasBlack = true;
+                        break;
+                    }
+                }
+
+                if (columnHasBlack && !inBar)
+                {
+                    // Starting a new bar
+                    inBar = true;
+                    barStartX = x;
+                }
+                else if (!columnHasBlack && inBar)
+                {
+                    // End of the current bar
+                    inBar = false;
+                    int barWidth = x - barStartX;
+
+                    // Calculate bar rectangle
+                    Rectangle barRect = new Rectangle(barStartX, 0, barWidth, height);
+                    barRectangles.Add(barRect);
+                }
+            }
+
             return barRectangles;
         }
 
