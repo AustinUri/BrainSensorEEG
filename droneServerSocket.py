@@ -103,6 +103,8 @@ def main():
         client_socket.close()
         exit(-1)
 
+
+    
     # Retrieve and send drone data
     data, code = get_drone_data(tello)
     if data:
@@ -110,18 +112,8 @@ def main():
     else:
         send_message(client_socket, code.value, {"connected": False})
 
-    
-    receive_command(client_socket)
-
-    # Retrieve and send drone data
-    data, code = get_drone_data(tello)
-    if data:
-        send_message(client_socket, code.value, data)
-    else:
-        send_message(client_socket, code.value, {"connected": False})
-    
-    
-    receive_command(client_socket)
+    for x in range(0,5):
+        receive_command(client_socket)
 
 
     #security 
@@ -169,11 +161,9 @@ def receive_command(client_socket):
         elif command == "Land":
             handle_command(DroneCommand.LAND) 
         elif command == "MoveUp" :
-            height=tello.get_height()
-            if height == 0 :
-                handle_command(DroneCommand.TAKEOFF,None)
-            else :
-                handle_command(DroneCommand.MOVE_UP,None)       
+            handle_command(DroneCommand.MOVE_UP)
+
+                   
         else:
             print("ffs")
 
@@ -182,11 +172,11 @@ def receive_command(client_socket):
         print(f"Error receiving command: {e}")
 
 
-def handle_command(command : DroneCommand, payload):
+def handle_command(command : DroneCommand):
     """
     Process the command based on its type.
     :param command: The DroneCommand received.
-    :param payload: Additional data sent with the command.
+    :param payload: Additional data sent with the command. :not implemented yet
     """
     if command == DroneCommand.TAKEOFF:
         print("Executing Takeoff...")
@@ -195,24 +185,29 @@ def handle_command(command : DroneCommand, payload):
         print("Executing Land...")
         tello.land()
     elif command == DroneCommand.TURN_LEFT:
-        distance = payload.get("Distance", 0) if payload else 0
-        print(f"Turning Left by {distance} units...")
+        print("Rotating counter clockwise 15 degrees")
         tello.rotate_counter_clockwise(15)
-        # Add turn left logic here
     elif command == DroneCommand.MOVE_LEFT:
-        distance = payload.get("Distance", 0) if payload else 0
-        print(f"Moving Left by {distance} units...")
-        tello.move_left()
+        print("Moving Left by 10 cm")
+        tello.move_left(10)
     elif command == DroneCommand.MOVE_RIGHT:
-        distance = payload.get("Distance", 0) if payload else 0
-        print(f"Moving Right by {distance} units...")
-        tello.move_right()
+        print("Moving Right by 10 cm")
+        tello.move_right(10)
     elif command == DroneCommand.MOVE_UP:
-        tello.move_up()
+        if tello.get_height() == 0:
+            tello.takeoff()
+        else:
+            tello.move_up(10)
     elif command == DroneCommand.MOVE_DOWN:
-        distance = payload.get("Distance", 0) if payload else 0
-        print(f"Moving Down by {distance} units...")
-        tello.move_down()
+        if tello.get_height() == 10 :
+            print("Executing Land...")
+            tello.land()
+        elif tello.get_height() < 10 :
+            print("Executing Land...")
+            tello.land()
+        else :
+            print("Moving Down by 10 cm...")
+            tello.move_down(10)
     else:
         print(f"Unknown command: {command.name}")
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -94,6 +95,9 @@ namespace NeuroTech.Analysis
         public int Width { get; set; }
         public int PositionX { get; set; }
         public Bitmap CroppedBarImage { get; set; }
+
+        public string SavePath { get; set; }  // Add this
+
     }
 
     public class BarChartAnalyzer
@@ -168,7 +172,8 @@ namespace NeuroTech.Analysis
                     int barPositionX = rect.X;
 
                     Bitmap croppedBar = CropRectangleFromBitmap(croppedImage, rect);
-
+                    string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"cropped_bar_{barPositionX}.png");
+                    croppedBar.Save(savePath, ImageFormat.Png);
                     barResults.Add(new BarAnalysisResult
                     {
                         Height = barHeight,
