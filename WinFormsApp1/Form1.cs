@@ -53,7 +53,7 @@ namespace WinFormsApp1
                     ScreenshotTimer screenshotTimer = new ScreenshotTimer(5); // Initialize ScreenshotTimer
                     BarChartAnalyzer analyzer = new BarChartAnalyzer(screenshotTimer); // Pass it to BarChartAnalyzer
 
-                    ServerF.DroneCommand command = (ServerF.DroneCommand)await analyzer.StartAnalysisAsync(); // Analyze and get the command
+                    ServerF.DroneCommand command = (ServerF.DroneCommand)await analyzer.StartAnalysisAsync(this); // Analyze and get the command
                     this._server.SendCommand(this._server.GetStream(),command);
                     Console.WriteLine($"Drone Command: {command}");
 
@@ -66,5 +66,18 @@ namespace WinFormsApp1
             }
 
         }
+
+        public void setCommandLabelText(ServerF.DroneCommand command)
+        {
+            if (command == DroneCommand.Takeoff || command == DroneCommand.MoveUp)
+            {
+                this.Label_Dcommand.Text = "Takeoff,Move up";
+            }
+            else if (DroneCommand.Land == command || command == DroneCommand.MoveDown)
+            {
+                this.Label_Dcommand.Text = "Land,Move Down";
+            }
+        }
+
     }
 }

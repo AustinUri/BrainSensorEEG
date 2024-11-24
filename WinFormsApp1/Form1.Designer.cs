@@ -43,13 +43,15 @@ namespace WinFormsApp1
             label_Dstatus = new Label();
             listbox_instru = new ListBox();
             button_StartProccess = new Button();
+            Label_Dcommand = new Label();
+            label_command = new Label();
             SuspendLayout();
             // 
             // label_Battery
             // 
             label_Battery.Anchor = AnchorStyles.None;
             label_Battery.AutoSize = true;
-            label_Battery.Location = new Point(76, 85);
+            label_Battery.Location = new Point(79, 155);
             label_Battery.Name = "label_Battery";
             label_Battery.Size = new Size(217, 25);
             label_Battery.TabIndex = 0;
@@ -60,7 +62,7 @@ namespace WinFormsApp1
             // 
             label_Welcome.Anchor = AnchorStyles.None;
             label_Welcome.AutoSize = true;
-            label_Welcome.Location = new Point(523, 24);
+            label_Welcome.Location = new Point(388, 36);
             label_Welcome.Name = "label_Welcome";
             label_Welcome.Size = new Size(95, 25);
             label_Welcome.TabIndex = 2;
@@ -70,7 +72,7 @@ namespace WinFormsApp1
             // 
             label_Height.Anchor = AnchorStyles.None;
             label_Height.AutoSize = true;
-            label_Height.Location = new Point(90, 162);
+            label_Height.Location = new Point(79, 232);
             label_Height.Name = "label_Height";
             label_Height.Size = new Size(157, 25);
             label_Height.TabIndex = 3;
@@ -80,7 +82,7 @@ namespace WinFormsApp1
             // 
             lable_Drone.Anchor = AnchorStyles.None;
             lable_Drone.AutoSize = true;
-            lable_Drone.Location = new Point(90, 227);
+            lable_Drone.Location = new Point(79, 297);
             lable_Drone.Name = "lable_Drone";
             lable_Drone.Size = new Size(118, 25);
             lable_Drone.TabIndex = 5;
@@ -89,7 +91,7 @@ namespace WinFormsApp1
             // label_Dbattery
             // 
             label_Dbattery.AutoSize = true;
-            label_Dbattery.Location = new Point(523, 85);
+            label_Dbattery.Location = new Point(526, 155);
             label_Dbattery.Name = "label_Dbattery";
             label_Dbattery.Size = new Size(125, 25);
             label_Dbattery.TabIndex = 6;
@@ -98,7 +100,7 @@ namespace WinFormsApp1
             // label_Dheight
             // 
             label_Dheight.AutoSize = true;
-            label_Dheight.Location = new Point(520, 162);
+            label_Dheight.Location = new Point(523, 232);
             label_Dheight.Name = "label_Dheight";
             label_Dheight.Size = new Size(119, 25);
             label_Dheight.TabIndex = 7;
@@ -107,7 +109,7 @@ namespace WinFormsApp1
             // label_Dstatus
             // 
             label_Dstatus.AutoSize = true;
-            label_Dstatus.Location = new Point(523, 227);
+            label_Dstatus.Location = new Point(526, 297);
             label_Dstatus.Name = "label_Dstatus";
             label_Dstatus.Size = new Size(116, 25);
             label_Dstatus.TabIndex = 9;
@@ -133,11 +135,32 @@ namespace WinFormsApp1
             button_StartProccess.UseVisualStyleBackColor = true;
             button_StartProccess.Click += button_StartProccess_Click;
             // 
+            // Label_Dcommand
+            // 
+            Label_Dcommand.Anchor = AnchorStyles.None;
+            Label_Dcommand.AutoSize = true;
+            Label_Dcommand.Location = new Point(526, 87);
+            Label_Dcommand.Name = "Label_Dcommand";
+            Label_Dcommand.Size = new Size(154, 25);
+            Label_Dcommand.TabIndex = 12;
+            Label_Dcommand.Text = "Label_Dcommand";
+            // 
+            // label_command
+            // 
+            label_command.AutoSize = true;
+            label_command.Location = new Point(79, 97);
+            label_command.Name = "label_command";
+            label_command.Size = new Size(105, 25);
+            label_command.TabIndex = 13;
+            label_command.Text = "Command :";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1245, 357);
+            Controls.Add(label_command);
+            Controls.Add(Label_Dcommand);
             Controls.Add(button_StartProccess);
             Controls.Add(listbox_instru);
             Controls.Add(label_Dstatus);
@@ -188,5 +211,7 @@ namespace WinFormsApp1
         }
 
         private Button button_StartProccess;
+        private Label Label_Dcommand;
+        private Label label_command;
     }
 }

@@ -103,5 +103,8 @@ $RECYCLE.BIN/
 .env.*
 
 # Ignore Git folders
-.git/
+.gi
 
+
+*.jpeg
+*.png

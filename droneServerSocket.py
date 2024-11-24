@@ -117,7 +117,7 @@ def main():
 
 
     #security 
-    if tello.get_height() is not 0:
+    if tello.get_height() != 0:
         tello.land()
 
     # Close the socket after use
@@ -162,10 +162,8 @@ def receive_command(client_socket):
             handle_command(DroneCommand.LAND) 
         elif command == "MoveUp" :
             handle_command(DroneCommand.MOVE_UP)
-
-                   
         else:
-            print("ffs")
+            print("command unhandeled yet")
 
 
     except Exception as e:

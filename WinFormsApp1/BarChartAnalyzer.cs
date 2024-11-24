@@ -5,21 +5,12 @@ using System.Drawing.Imaging;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinFormsApp1;
+using ServerF;
 
 namespace NeuroTech.Analysis
 {
-    public enum DroneCommand : byte
-    {
-        Takeoff = 0b000,    // 0 in decimal
-        Land = 0b001,       // 1 in decimal
-        TurnLeft = 0b010,   // 2 in decimal
-        TurnRight = 0b011,  // 3 in decimal
-        MoveLeft = 0b100,   // 4 in decimal
-        MoveRight = 0b101,  // 5 in decimal
-        MoveUp = 0b110,     // 6 in decimal
-        MoveDown = 0b111,    // 7 in decimal
-        Hover = 0b1000      // 8 in decimal
-    }
+
 
     public class ScreenCapture
     {
@@ -109,7 +100,7 @@ namespace NeuroTech.Analysis
             _screenshotTimer = screenshotTimer;
         }
 
-        public async Task<DroneCommand> StartAnalysisAsync()
+        public async Task<DroneCommand> StartAnalysisAsync(Form1 mainfrom)
         {
             try
             {
@@ -138,9 +129,10 @@ namespace NeuroTech.Analysis
 
                 // Step 3: Compare bar results across screenshots and decide a command
                 DroneCommand command = CompareChartsAndDecideCommand(allResults);
-
+                mainfrom.setCommandLabelText(command);
 
                 Console.WriteLine($"Command decided: {command}");
+                
                 return command;
             }
             catch (Exception ex)
